@@ -7,6 +7,7 @@ export const mockUsers: Record<TenantType, User> = {
     name: 'Anna Andersson',
     email: 'anna@example.com',
     tenant: 'KUNDER',
+    role: 'Customer',
     avatar: '👤'
   },
   FÖRETAG: {
@@ -14,6 +15,7 @@ export const mockUsers: Record<TenantType, User> = {
     name: 'David Davidsson',
     email: 'david@företag.se',
     tenant: 'FÖRETAG',
+    role: 'Business User',
     avatar: '🏢'
   },
   ÅTERFÖRSÄLJARE: {
@@ -21,6 +23,7 @@ export const mockUsers: Record<TenantType, User> = {
     name: 'Maria Mariasson', 
     email: 'maria@partner.com',
     tenant: 'ÅTERFÖRSÄLJARE',
+    role: 'Partner',
     avatar: '🤝'
   },
   DEVTEAM: {
@@ -28,6 +31,7 @@ export const mockUsers: Record<TenantType, User> = {
     name: 'Erik Eriksson',
     email: 'erik@devteam.com', 
     tenant: 'DEVTEAM',
+    role: 'Developer',
     avatar: '⚙️'
   }
 }

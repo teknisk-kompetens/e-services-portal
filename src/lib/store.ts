@@ -8,74 +8,48 @@ export interface User {
   name: string
   email: string
   tenant: TenantType
-  avatar?: string
+  role: string
+  avatar: string
 }
 
-export interface AppState {
-  // Authentication
+interface StoreState {
+  currentView: 'services' | 'dashboard'
+  setCurrentView: (view: 'services' | 'dashboard') => void
+  
+  // Keep existing SKELETTET state for backward compatibility
+  sidebarOpen: boolean
+  setSidebarOpen: (open: boolean) => void
+  toggleSidebar: () => void
+  currentTenant: TenantType
+  setCurrentTenant: (tenant: TenantType) => void
+  switchTenant: (tenant: TenantType) => void
+  selectedDemo: string | null
+  setSelectedDemo: (demo: string | null) => void
+  
+  // Auth state
   user: User | null
   isAuthenticated: boolean
-  
-  // Tenant Management
-  currentTenant: TenantType
-  
-  // UI State
-  sidebarOpen: boolean
-  currentApp: string | null
-  
-  // Demo Apps State
-  selectedDemo: string | null
-  
-  // Actions
   login: (user: User) => void
   logout: () => void
-  switchTenant: (tenant: TenantType) => void
-  toggleSidebar: () => void
-  setCurrentApp: (appId: string | null) => void
-  setSelectedDemo: (demoId: string | null) => void
 }
 
-export const useStore = create<AppState>((set, get) => ({
-  // Initial State
+export const useStore = create<StoreState>((set) => ({
+  currentView: 'services',
+  setCurrentView: (view) => set({ currentView: view }),
+  
+  // Keep existing SKELETTET state
+  sidebarOpen: false,
+  setSidebarOpen: (open) => set({ sidebarOpen: open }),
+  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+  currentTenant: 'FÖRETAG',
+  setCurrentTenant: (tenant) => set({ currentTenant: tenant }),
+  switchTenant: (tenant) => set({ currentTenant: tenant }),
+  selectedDemo: null,
+  setSelectedDemo: (demo) => set({ selectedDemo: demo }),
+  
+  // Auth state
   user: null,
   isAuthenticated: false,
-  currentTenant: 'KUNDER',
-  sidebarOpen: true,
-  currentApp: null,
-  selectedDemo: null,
-
-  // Actions
-  login: (user: User) => set({ 
-    user, 
-    isAuthenticated: true, 
-    currentTenant: user.tenant 
-  }),
-
-  logout: () => set({ 
-    user: null, 
-    isAuthenticated: false,
-    currentTenant: 'KUNDER',
-    currentApp: null,
-    selectedDemo: null
-  }),
-
-  switchTenant: (tenant: TenantType) => set({ 
-    currentTenant: tenant,
-    currentApp: null,
-    selectedDemo: null
-  }),
-
-  toggleSidebar: () => set(state => ({ 
-    sidebarOpen: !state.sidebarOpen 
-  })),
-
-  setCurrentApp: (appId: string | null) => set({ 
-    currentApp: appId,
-    selectedDemo: null
-  }),
-
-  setSelectedDemo: (demoId: string | null) => set({ 
-    selectedDemo: demoId,
-    currentApp: demoId
-  })
+  login: (user) => set({ user, isAuthenticated: true, currentTenant: user.tenant }),
+  logout: () => set({ user: null, isAuthenticated: false }),
 }))
